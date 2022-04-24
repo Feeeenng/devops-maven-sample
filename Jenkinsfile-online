@@ -63,8 +63,7 @@ pipeline {
             input(id: 'deploy-to-dev', message: 'deploy to dev?')
             container ('maven') {
                 sh """ 
-                   helm repo add main https://charts.kubesphere.io/main
-
+                   helm init 
                   """
                 sh  "helm package deploy/devops-maven-sample --version=$CHART_VERSION --app-version=$BRANCH_NAME-$BUILD_NUMBER"
 
