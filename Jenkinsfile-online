@@ -62,10 +62,7 @@ pipeline {
           steps {
             input(id: 'deploy-to-dev', message: 'deploy to dev?')
             container ('maven') {
-                sh """ 
-                   helm init 
-                  """
-                sh  "helm package deploy/devops-maven-sample --version=$CHART_VERSION --app-version=$BRANCH_NAME-$BUILD_NUMBER"
+                sh  "helm3 package deploy/devops-maven-sample --version=$CHART_VERSION --app-version=$BRANCH_NAME-$BUILD_NUMBER"
 
             }
           }
@@ -76,7 +73,7 @@ pipeline {
             input(id: 'deploy-to-dev', message: 'deploy to dev?')
             container ('maven') {
                  sh """
-                    helm upgrade deploy/$APP_NAME  $APP_NAME --install --namespace $NAMESPACE \
+                    helm3 upgrade deploy/$APP_NAME  $APP_NAME --install --namespace $NAMESPACE \
                           --set image.repository=$REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME \
                           --set  image.tag=$SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER
                     """
