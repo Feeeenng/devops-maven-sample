@@ -60,7 +60,6 @@ pipeline {
 
         stage('app package') {
           steps {
-            input(id: 'deploy-to-dev', message: 'deploy to dev?')
             container ('maven') {
                 sh  "helm3 package deploy/devops-maven-sample --version=$CHART_VERSION --app-version=$BRANCH_NAME-$BUILD_NUMBER"
 
@@ -70,12 +69,10 @@ pipeline {
 
          stage('deploy to dev') {
           steps {
-            input(id: 'deploy-to-dev', message: 'deploy to dev?')
+          //  input(id: 'deploy-to-dev', message: 'deploy to dev?')
             container ('maven') {
                  sh """
-                    helm3 upgrade deploy/$APP_NAME  $APP_NAME --install --namespace $NAMESPACE \
-                          --set image.repository=$REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME \
-                          --set  image.tag=$SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER
+                    helm3 upgrade deploy/$APP_NAME  $APP_NAME --install --namespace $NAMESPACE --set image.repository=$REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME --set  image.tag=$SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER
                     """
             }
           }
