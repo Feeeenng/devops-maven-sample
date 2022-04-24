@@ -1,6 +1,0 @@
-# document exapmle  
-https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/
-
-# - op: replace
-  # path: /spec/template/spec/containers/0/image
-  # value: $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER

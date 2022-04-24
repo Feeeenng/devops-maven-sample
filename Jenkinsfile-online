@@ -16,7 +16,9 @@ pipeline {
         REGISTRY = 'docker.io'
         DOCKERHUB_NAMESPACE = 'feeeng'
         GITHUB_ACCOUNT = 'kubesphere'
-        APP_NAME = 'devops-java-sample'
+        APP_NAME = 'devops-maven-sample'
+        CHART_VERSION = "0.1.6"
+        NAMESPACE = 'kubesphere-sample-dev'
     }
 
     stages {
@@ -59,23 +61,35 @@ pipeline {
            }
         }
 
-        stage('deploy to dev') {
+        stage('app package') {
           when{
             branch 'master'
           }
           steps {
             input(id: 'deploy-to-dev', message: 'deploy to dev?')
             container ('maven') {
-                withCredentials([
-                    kubeconfigFile(
-                    credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
-                    variable: 'KUBECONFIG')
-                    ]) {
-                    sh 'kubectl kustomize  deploy/dev | envsubst| kubectl apply -f -'
-                }
+                sh  "helm package deploy/devops-maven-sample --version=$CHART_VERSION --app-version=$BRANCH_NAME-$BUILD_NUMBER"
+
             }
           }
         }
+
+         stage('deploy to dev') {
+          when{
+            branch 'master'
+          }
+          steps {
+            input(id: 'deploy-to-dev', message: 'deploy to dev?')
+            container ('maven') {
+                 sh """
+                    helm upgrade deploy/$APP_NAME  $APP_NAME --install --namespace $NAMESPACE \
+                          --set image.repository=$REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME \
+                          --set  image.tag=$SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER
+                    """
+            }
+          }
+        }
+
         stage('push with tag'){
           when{
             expression{
