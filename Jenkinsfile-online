@@ -71,11 +71,15 @@ pipeline {
           steps {
           //  input(id: 'deploy-to-dev', message: 'deploy to dev?')
             container ('maven') {
-                 sh """
+                 withCredentials([kubeconfigFile(credentialsId: env.KUBECONFIG_CREDENTIAL_ID, variable: 'KUBECONFIG')]) {
+                    sh """
                     helm3 upgrade --install  $APP_NAME  deploy/$APP_NAME --namespace $NAMESPACE \
                           --set image.repository=$REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME \
                           --set  image.tag=SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER
                     """
+
+                 }
+                 
             }
           }
         }
