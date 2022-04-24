@@ -62,6 +62,7 @@ pipeline {
           steps {
             input(id: 'deploy-to-dev', message: 'deploy to dev?')
             container ('maven') {
+                sh 'helm repo index .'
                 sh  "helm package deploy/devops-maven-sample --version=$CHART_VERSION --app-version=$BRANCH_NAME-$BUILD_NUMBER"
 
             }
