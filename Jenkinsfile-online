@@ -69,7 +69,7 @@ pipeline {
 
          stage('deploy to dev') {
           steps {
-          //  input(id: 'deploy-to-dev', message: 'deploy to dev?')
+           input(id: 'deploy-to-dev', message: 'deploy to dev?')
             container ('maven') {
                  withCredentials([kubeconfigFile(credentialsId: env.KUBECONFIG_CREDENTIAL_ID, variable: 'KUBECONFIG')]) {
                     sh """
@@ -83,26 +83,6 @@ pipeline {
             }
           }
         }
-
         
-        stage('deploy to production') {
-          when{
-            expression{
-              return params.TAG_NAME =~ /v.*/
-            }
-          }
-          steps {
-            input(id: 'deploy-to-production', message: 'deploy to production?')
-            container ('maven') {
-                withCredentials([
-                    kubeconfigFile(
-                    credentialsId: env.KUBECONFIG_CREDENTIAL_ID,
-                    variable: 'KUBECONFIG')
-                    ]) {
-                    sh 'kubectl kustomize  deploy/prod | envsubst| kubectl apply -f -'
-                }
-            }
-          }
-        }
     }
 }
