@@ -75,8 +75,6 @@ def create_package(version, app_version):
         subprocess.call("helm package ../deploy/devops-maven-sample/ --version {version} --app-version {app_version}".format(version=version, app_version=app_version))
     else:
         subprocess.call("helm package deploy/devops-maven-sample --app-version {app_version}".format(app_version=app_version), shell=True)
-        # subprocess.call("pwd")
-
 
 
 @cli.command()
