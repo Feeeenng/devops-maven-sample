@@ -1,0 +1,38 @@
+pipeline {
+  agent {
+    node {
+      label 'maven'
+    }
+  }
+  
+  
+  stages{
+      stage('checkout'){
+          steps {
+            contaniner('maven'){
+              checkout(scm)
+            }
+            
+          }
+        
+      }
+    
+    
+    stage('fosscheck'){
+          steps {
+              container('maven'){
+                  fosscheck endpoint: 'https://trial.fosscheck.com', outputDir: '/home/jenkins', projectToken: 'TXRLeEMzYnd4VS9ON3UwYWFybUdoNnYrYi9Ka25uWFU3bWx5WlcrWXZTZEQ0dWpvdUloMTRjc2dhdndVdkFiMDdZNmFBOTNuUVFYcHdnVmNST0hISzJ3WkxkS0lBdEJDNzdmQmRwemxENjRGUzUrZDY4WStWK25nL05NSkRxWjNPVlk0b28wajdqU29nc2dhakRpREFLTDYzTkJvNmd1NEtLbUU0USticHhNPTpIaVM4aDV1M2V1ZlVnY1JZMDliODRyVDNIQ05UWHp2YWJCelNtNGdQNlpUbXpPK1Uyc1lYaDRTYWQ2aHdLd1F0bVNONmN6NXFSUzRIb1dHQS9RaEZZY1FlUFlMem55VC8zZ0ZjSDFSeDRJWHdFUEVON3VleEp1amZCU0FjNmpWNkZ1RHAxQmwvK1ZUcWc3blJ4TkkwYUN1M3h3NXdxS1d2UWpkZE1TMEZEYm89', token: 'aCtOVFRIZTJpbXJ2WnQwcU9zVnd0UHRWY1JpYlVqa3NjZXg1NzhhaVNCamVFQm81N2tGTTJwZWd2SW5XbzRIQmRQTDFXTmU5TnlkMnBKMXpPRWROc0owdnpzQWFxVlFFeDFtZHRBd2h3cUxsc2w0UTN1a2hPRHFjaFI4SGxXS0R0a0xXY0dBdnlWRlVJQ0ZjSDI0ZHpwWTk2LzBGaG94U0IvY1dIdVRBaVdnPTpPVXBYalhZbjN4RTF3ZkpZRDFQajdqRUpxNDZwZDZzME9xUTZXV0MyZmJUN0RvaDJaczV0WGdSWmdoUXl5WGIwTWtyNmlsczVPa0t0anJWVFRsZ2ZjTU1tQjY3czNXQlo2eDZxRUxDcEpNeTA5M3padDhpVlVLTEMxcHZxQUFFYjIrK3BmTUt2S3FrUzVKd0FrVC9BcFlTTTNySXBTaldKcWpweDc3dmkwMk09Om1SUFNNWXdLbFVGd053RGprUlNlVUVHZUp3dnJxMkNQUHhaejBoNm4xUFZTdUF0NllkemlzWk44QnIxeUVBS3Y2SzNKYUUvY3lmRk43M0srekUrS0ErUFlxajdBd2RxMlRRSEd2MmhYUTdQaG1QcXRmNm1NMFVNS09ZUENTd0NiV3NScDlDdkhvYm51dllTUlVPRlNTcm4zSmpOK1lQaWhTTXNxa04yYWdkZz06ajNJYkxYOHN2SERFQWVQTXZSVUY0QXdNTXBlYVlSdUMrL2RQK1FLaGpqN05yU2hMTXI5dVdFNmVNZ3l5ekU4U04rcjYvdkowbWU4ZlhXR3B5c29OOUdlMmhOOEwxUFlwQ3k0Vk9pa2RyVTJNK3c0d3E1S1JqSEkyekRpVzIwSGpiTDhYc25oMTd0QVlpV2F2NmE5R1ppcmRmbGtWM1Rla0gvdE1LbFRHWnNVPQ=='
+                  
+                  
+                  
+              }
+            }
+        }
+    
+  }
+  
+
+
+
+
+}
