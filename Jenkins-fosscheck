@@ -9,7 +9,7 @@ pipeline {
   stages{
       stage('checkout'){
           steps {
-            contaniner('maven'){
+            container('maven'){
               checkout(scm)
             }
             
