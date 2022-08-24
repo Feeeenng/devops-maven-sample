@@ -30,7 +30,7 @@ pipeline {
           steps {
             container('maven-fosscheck'){
               sh 'ls -l'
-              checkout(scm)
+              // checkout(scm)
             }
             
           }
