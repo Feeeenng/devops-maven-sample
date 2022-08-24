@@ -29,7 +29,7 @@ pipeline {
 
           steps {
               container('maven'){
-                    unstash 'code_path'
+                    unstash 'code'
                     sh 'ls -l'
                     sh 'java -jar /home/jenkins/cli-extractor-1.1-RELEASE.jar --help'
                   // fosscheck endpoint: 'https://trial.fosscheck.com', outputDir: '/home/jenkins/agent/workspace/test6pv4m_fosscheck_fosscheck', 
