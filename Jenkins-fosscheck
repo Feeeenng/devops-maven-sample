@@ -1,8 +1,27 @@
 pipeline {
-  // agent {
-  //   node {
-  //     label 'maven'
-  //   }
+  agent {
+    // node {
+    //   label 'maven'
+    // }
+    kubernetes {
+      label 'maven-fosscheck'
+      inheritFrom 'maven'
+      yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    some-label: some-label-value
+spec:
+  containers:
+  - name: maven
+    image: feeeng/builder-maven:v3.3.0-fosscheck
+    command: ['cat']
+    tty: true
+"""
+
+
+    }
   }
   
   
