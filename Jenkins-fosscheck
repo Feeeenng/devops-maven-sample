@@ -10,9 +10,9 @@ pipeline {
   stages{
       stage('checkout'){
           steps {
-            container('maven-fosscheck'){
+            container('maven'){
               // sh 'ls -l'
-              checkout(scm)
+               git branch: 'fosscheck', url: 'https://github.com/Feeeenng/devops-maven-sample/'
             }
             
           }
