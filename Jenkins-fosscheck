@@ -6,8 +6,6 @@ pipeline {
   }
 
 
-  }
-  
   
   stages{
       stage('checkout'){
@@ -28,6 +26,7 @@ pipeline {
             label 'maven-fosscheck'
           }
         }
+
           steps {
               container('maven-fosscheck'){
                     sh 'ls -l'
