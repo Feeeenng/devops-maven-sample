@@ -3,6 +3,7 @@ pipeline {
     node {
       label 'maven'
     }
+  }
 //     kubernetes {
 //       label 'maven-fosscheck'
 //       inheritFrom 'maven'
@@ -21,8 +22,7 @@ pipeline {
 // """
 
 
-    }
-  }
+  // }
   
   
   stages{
