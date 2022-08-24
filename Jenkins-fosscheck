@@ -1,7 +1,7 @@
 pipeline {
   agent {
     node {
-      label 'maven'
+      label 'nodejs'
     }
   }
 
@@ -10,7 +10,7 @@ pipeline {
   stages{
       stage('checkout'){
           steps {
-            container('node'){
+            container('nodejs'){
               // sh 'ls -l'
                git branch: 'fosscheck', url: 'https://github.com/Feeeenng/devops-maven-sample/'
             }
