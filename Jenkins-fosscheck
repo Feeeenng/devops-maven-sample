@@ -9,8 +9,8 @@ pipeline {
       inheritFrom 'maven'
       spec:
         containers:
-        - name: maven
-          image: feeeng/builder-maven:v3.3.0-fosscheck
+        - name: 'maven'
+          image: 'feeeng/builder-maven:v3.3.0-fosscheck'
     }
   }
   
