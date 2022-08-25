@@ -12,6 +12,7 @@ pipeline {
           steps {
             container('nodejs'){
                git branch: 'fosscheck', url: 'https://github.com/Feeeenng/devops-maven-sample/'
+               sh 'node --version'
                stash name: 'code'
             }
             
@@ -31,6 +32,7 @@ pipeline {
               container('maven'){
                     unstash 'code'
                     sh 'ls -l'
+                    
                     sh 'java -jar /home/jenkins/cli-extractor-1.1-RELEASE.jar --help'
                   // fosscheck endpoint: 'https://trial.fosscheck.com', outputDir: '/home/jenkins/agent/workspace/test6pv4m_fosscheck_fosscheck', 
                   // projectToken: 'TXRLeEMzYnd4VS9ON3UwYWFybUdoNnYrYi9Ka25uWFU3bWx5WlcrWXZTZEQ0dWpvdUloMTRjc2dhdndVdkFiMDdZNmFBOTNuUVFYcHdnVmNST0hISzJ3WkxkS0lBdEJDNzdmQmRwemxENjRGUzUrZDY4WStWK25nL05NSkRxWjNPVlk0b28wajdqU29nc2dhakRpREFLTDYzTkJvNmd1NEtLbUU0USticHhNPTpIaVM4aDV1M2V1ZlVnY1JZMDliODRyVDNIQ05UWHp2YWJCelNtNGdQNlpUbXpPK1Uyc1lYaDRTYWQ2aHdLd1F0bVNONmN6NXFSUzRIb1dHQS9RaEZZY1FlUFlMem55VC8zZ0ZjSDFSeDRJWHdFUEVON3VleEp1amZCU0FjNmpWNkZ1RHAxQmwvK1ZUcWc3blJ4TkkwYUN1M3h3NXdxS1d2UWpkZE1TMEZEYm89', 
