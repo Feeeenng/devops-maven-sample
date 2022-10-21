@@ -22,11 +22,17 @@ pipeline {
     
     
     stage('fosscheck'){
-        agent {
-          node {
-            label 'maven-fosscheck'
+      agent {
+        kubernetes {
+          inheritFrom 'maven'
+          containerTemplate {
+            name 'maven'
+            image 'feeeng/builder-maven:v3.3.0-fosscheck-v01'
           }
+
         }
+
+      }
 
           steps {
               container('maven'){
