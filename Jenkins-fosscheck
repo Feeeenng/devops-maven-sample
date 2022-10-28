@@ -38,7 +38,7 @@ pipeline {
               container('maven'){
                     unstash 'code'
                     sh 'ls -l'
-                    
+                    sh 'pwd'
                     sh 'java -jar /home/jenkins/cli-extractor.jar  check c3R6d4ZkPDF5dpiPtZJNabGAjYuVisxxU3yIjWpLBNID9NM=c3R6d4ZkPDF5dpiPtZJNabGAjYuVisxxU3yIjWpLBNID9NM= '
               }
             }
