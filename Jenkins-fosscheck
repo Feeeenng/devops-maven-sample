@@ -40,7 +40,7 @@ pipeline {
                     sh 'ls -l'
                     sh 'pwd'
                     sh 'env'
-                    sh 'java -jar /home/jenkins/cli-extractor.jar  check $WORKSPACE c3R6d4ZkPDF5dpiPtZJNabGAjYuVisxxU3yIjWpLBNID9NM=c3R6d4ZkPDF5dpiPtZJNabGAjYuVisxxU3yIjWpLBNID9NM= '
+                    sh 'java -jar /home/jenkins/cli-extractor.jar  check $WORKSPACE c3R6d4ZkPDF5dpiPtZJNabGAjYuVisxxU3yIjWpLBNID9NM= '
               }
             }
         }
