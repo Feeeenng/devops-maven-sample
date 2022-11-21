@@ -39,7 +39,7 @@ pipeline {
                     unstash 'code'
                     sh 'ls -l'
                     sh 'env'
-                    sh 'java -jar /home/jenkins/cli-extractor.jar  check  $WORKSPACE c3R6d4ZkPDF5dpiPtZJNabGAjYuVisxxU3yIjWpLBNID9NM= -p=test01' 
+                    sh 'java -jar /home/jenkins/cli-extractor.jar  check  $WORKSPACE c3R6d4ZkPDF5dpiPtZJNabGAjYuVisxxU3yIjWpLBNID9NM=' 
               }
             }
         }
