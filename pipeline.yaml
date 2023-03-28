@@ -1,0 +1,29 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: app-deploy
+spec:
+  description: |
+    this is example devops-maven-sample
+  params:
+    - name: repo_url
+      type: string
+      description: git repo url to clone from
+      default: 'https://github.com/Feeeenng/devops-maven-sample.git'
+  workspaces:
+    - name: share-code
+      description: |
+        code workspaces
+  tasks:
+    - name: git-clone
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: share-code
+      retries: 3
+  finally:
+    - name: cleanup-workspace
+      taskRef:
+        name: cleanup-workspace
+      workspaces:
+        - name: share-code

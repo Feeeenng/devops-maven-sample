@@ -1,0 +1,2 @@
+## this plugin form `https://hub.tekton.dev/tekton/task/git-cli`
+## install task :  `kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/git-cli/0.4/git-cli.yaml` 

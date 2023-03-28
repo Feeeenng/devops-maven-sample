@@ -1,0 +1,2 @@
+## this plugin from `https://hub.tekton.dev/tekton/task/sonarqube-scanner`
+## install task `kubectl apply -f https://raw.githubusercontent.com/tektoncd/catalog/main/task/sonarqube-scanner/0.4/sonarqube-scanner.yaml`
