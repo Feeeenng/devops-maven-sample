@@ -47,6 +47,7 @@ spec:
       workspaces:
         - name: output
           workspace: share-code
+      retries: 3
       params:
         - name: url
           value: "$(params.git-url)"
@@ -100,15 +101,14 @@ spec:
       runAfter:
         - "checkout-code"
       params:
-        # - name: MAVEN_IMAGE
-          # value: registry.cn-shenzhen.aliyuncs.com/os_mirror/feeeng.builder-maven:v3.3.0
+        - name: MAVEN_IMAGE
+          value: registry.cn-shenzhen.aliyuncs.com/os_mirror/gcr.io.cloud-builders.mvn:3.5.0-jdk-8
         - name: GOALS
           value: 
-            - -DskipTests
-            - -gs 
-            - $(workspaces.source.path)/configuration/settings.xml 
+            - -Dmaven.test.skip=true
             - clean
             - package
+      retries: 3
       workspaces:
          - name: source
            workspace: share-code
@@ -124,7 +124,7 @@ spec:
         - name: BUILDER_IMAGE
           value: registry.cn-shenzhen.aliyuncs.com/os_mirror/quay.io.buildah.stable:v1.23.3
         - name: IMAGE
-          value:  registry.cn-shenzhen.aliyuncs.com/os_mirror/tekton-shipwright-cicd:$(params.app-name)-$(params.commit-id)
+          value:  registry.cn-shenzhen.aliyuncs.com/os_mirror/tekton-shipwright-cicd:$(params.app-name)-v$(task.checkout-code.results.committer-date)
         - name: DOCKERFILE
           value: $(workspaces.source.path)/Dockerfile-online
       workspaces:
