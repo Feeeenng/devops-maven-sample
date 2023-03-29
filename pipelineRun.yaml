@@ -15,7 +15,7 @@ spec:
     - name: git-url
       value: "https://github.com/Feeeenng/devops-maven-sample.git"
     - name: commit-id
-      value: "d7db6902d0069a9abc800c8eb980403d1adc245e"
+      value: "tekton"
   workspaces:
     - name: share-code
       volumeClaimTemplate:
