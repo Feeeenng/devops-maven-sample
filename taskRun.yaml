@@ -1,12 +1,20 @@
 apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
-  name: run-git-clone
+  name: run-deploy-app
 spec:
+  serviceAccountName: default
   taskRef:
-    name: git-clone
+    name: deploy-app
+  workspaces:
+    - name: kubeconfig-dir
+      configMap:
+        name: kubeconfig
   params:
-    - name: repo_url
-      value: "https://github.com/Feeeenng/devops-maven-sample.git"
-    
+    - name: image
+      value: registry.cn-shenzhen.aliyuncs.com/os_mirror/feeeng.builder-base
+    - name: script
+      value: |
+          kubectl --help
+
   

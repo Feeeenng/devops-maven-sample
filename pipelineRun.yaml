@@ -1,0 +1,40 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: run-app-deploy-
+spec:
+  serviceAccountName: default
+  podTemplate:
+    securityContext:
+      fsGroup: 65532
+  pipelineRef:
+    name: app-deploy
+  params:
+    - name: app-name
+      value: "devops-maven-sample"
+    - name: git-url
+      value: "https://github.com/Feeeenng/devops-maven-sample.git"
+    - name: commit-id
+      value: "d7db6902d0069a9abc800c8eb980403d1adc245e"
+  workspaces:
+    - name: share-code
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - "ReadWriteOnce"
+          resources:
+            requests:
+              storage: 1Gi
+    - name: maven-settings
+      configMap:
+        name: maven-settings
+    - name: kubeconfig-dir
+      configMap:
+        name: kubeconfig
+    - name: docker-credentials
+      secret:
+        secretName: harbor-token
+        
+
+
+  

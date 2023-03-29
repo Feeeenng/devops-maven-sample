@@ -1,0 +1,35 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: deploy-app
+  labels:
+    app.kubernetes.io/version: "0.1"
+spec:
+  description: >-
+    This task is from feeeng/builder-base  https://github.com/Feeeenng/builder-base
+  workspaces:
+    - name: mainfest-dir
+      optional: true
+    - name: kubeconfig-dir
+      optional: true
+  results:
+    - name: deploy-result
+      description: deploy result
+  params:
+    - name: script
+      description: The Liunx script to run
+      type: string
+      default: "uname -a"
+    - name: image
+      default: feeeng/builder-base
+  steps:
+    - name: cli
+      image: $(params.image)
+      script: |
+        #!/usr/bin/env bash
+
+        [[ "$(workspaces.kubeconfig-dir.bound)" == "true" ]] && \
+        [[ -f $(workspaces.kubeconfig-dir.path)/kubeconfig ]] && \
+        export KUBECONFIG=$(workspaces.kubeconfig-dir.path)/kubeconfig
+
+        $(params.script)

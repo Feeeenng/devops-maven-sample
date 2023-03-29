@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: random-tag
+spec:
+  resources:
+    outputs:
+        - name: datetime
+          type: string
+  steps:
+    - name: random-tag
+      image: python:alpine3.6
+      script: |
+        python -c | import datetime;print(datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%s"))

@@ -2,28 +2,141 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: app-deploy
+  annotations:
+    pipelinesascode.tekton.dev/task: "[checkout-code,unit-test,build-code,build-image]"
 spec:
-  description: |
-    this is example devops-maven-sample
   params:
-    - name: repo_url
+    - name: app-name
       type: string
-      description: git repo url to clone from
-      default: 'https://github.com/Feeeenng/devops-maven-sample.git'
+      description: The app name 
+      default: "devops-manve-sample"
+    - name: git-url
+      type: string
+      description: The git repo URL to clone from.
+    - name: commit-id
+      type: string
+      default: 'tekton'
+      description: The git commit to fetch.
+    # sonarqube
+    # - name: sonarqube-host-url
+    #   type: string
+    #   description: The Sonarqube Host Url
+    #   default: '127.0.0.1:9000'
+    # - name: sonarqube-project-key
+    #   type: string
+    #   description: The Sonarqube Project Key
+    # - name: sonarqube-main-source
+    #   type: string
+    #   description: main sources file
+    #   default: '.'
+
+
   workspaces:
     - name: share-code
-      description: |
-        code workspaces
+    - name: kubeconfig-dir
+    - name: docker-credentials
+    - name: maven-settings
+  # resources:
+      # - name: random-tag
+        # type: string
   tasks:
-    - name: git-clone
+    ## step checkout
+    - name: checkout-code
       taskRef:
         name: git-clone
       workspaces:
-        - name: share-code
-      retries: 3
-  finally:
-    - name: cleanup-workspace
+        - name: output
+          workspace: share-code
+      params:
+        - name: url
+          value: "$(params.git-url)"
+        - name: revision
+          value: "$(params.commit-id)"
+        - name: gitInitImage
+          value: togettoyou/gcr.io.tekton-releases.github.com.tektoncd.pipeline.cmd.git-init:v0.40.2
+        # - name: userHome
+          # value: "$(params.user-home)"  
+    ## step unit-test
+    # - name: unit-test
+    #   taskRef:
+    #     name: maven
+    #   runAfter:
+    #     - "checkout-code"
+    #   params:
+    #     # - name: MAVEN_IMAGE
+    #       # value: registry.cn-shenzhen.aliyuncs.com/os_mirror/feeeng.builder-maven:v3.3.0
+    #     - name: GOALS
+    #       value: 
+    #         - clean 
+    #         - -gs 
+    #         - $(workspaces.share-code.path)/configuration/settings.xml
+    #         - test
+    #   workspaces:
+    #     - name: source
+    #       workspace: share-code
+    #     - name: maven-settings
+    ## step sonarqube
+    # - name: sonarqube-test
+    #   taskRef:
+    #       name: sonarqube
+    #   runAfter:
+    #     - "checkout-code"
+    #   workspaces:
+    #     - name: share-code
+    #   params:
+    #     - name: SONAR_HOST_URL
+    #       value: "$(params.sonarqube-host-url)"
+    #     - name: SONAR_PROJECT_KEY
+    #       value: "$(params.sonarqube-project-key)"
+    #     - name: SOURCE_TO_SCAN
+    #       value: "$(params.sonarqube-main-source)"
+    #     - name: SONAR_SCANNER_IMAGE
+    #       value: feeeng/builder-base:v3.3.0
+    
+    ## step build java code
+    - name: build-code
       taskRef:
-        name: cleanup-workspace
+        name: maven
+      runAfter:
+        - "checkout-code"
+      params:
+        # - name: MAVEN_IMAGE
+          # value: registry.cn-shenzhen.aliyuncs.com/os_mirror/feeeng.builder-maven:v3.3.0
+        - name: GOALS
+          value: 
+            - -DskipTests
+            - -gs 
+            - $(workspaces.source.path)/configuration/settings.xml 
+            - clean
+            - package
+      workspaces:
+         - name: source
+           workspace: share-code
+         - name: maven-settings
+
+    # step use buildah build && push images
+    - name: build-image
+      runAfter:
+        - "build-code"
+      params:
+        - name: output-image
+          value:  registry.cn-shenzhen.aliyuncs.com/os_mirror/tekton-shipwright-cicd:$(params.app-name)-$(time).substring(0,6)
       workspaces:
         - name: share-code
+        - name: docker-credentials
+      taskSpec:
+        apiVersion: shipwright.io/v1alpha1
+        kind: Build
+        spec:
+          source:
+            url: $(params.git-url)
+            revision: $(params.commit-id)
+          strategy:
+            name: buildah
+            kind: ClusterBuildStrategy
+          output:
+            image: $(params.output-image)
+            credentials:
+              name: docker-credentials
+          dockerfile: Dockerfile-online
+        
