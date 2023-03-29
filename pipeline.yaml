@@ -116,27 +116,19 @@ spec:
 
     # step use buildah build && push images
     - name: build-image
+      taskRef:
+        name: buildah
       runAfter:
         - "build-code"
       params:
-        - name: output-image
-          value:  registry.cn-shenzhen.aliyuncs.com/os_mirror/tekton-shipwright-cicd:$(params.app-name)-$(time).substring(0,6)
+        - name: BUILDER_IMAGE
+          value: registry.cn-shenzhen.aliyuncs.com/os_mirror/quay.io.buildah.stable:v1.23.3
+        - name: IMAGE
+          value:  registry.cn-shenzhen.aliyuncs.com/os_mirror/tekton-shipwright-cicd:$(params.app-name)-$(params.commit-id)
+        - name: DOCKERFILE
+          value: $(workspaces.source.path)/Dockerfile-online
       workspaces:
-        - name: share-code
-        - name: docker-credentials
-      taskSpec:
-        apiVersion: shipwright.io/v1alpha1
-        kind: Build
-        spec:
-          source:
-            url: $(params.git-url)
-            revision: $(params.commit-id)
-          strategy:
-            name: buildah
-            kind: ClusterBuildStrategy
-          output:
-            image: $(params.output-image)
-            credentials:
-              name: docker-credentials
-          dockerfile: Dockerfile-online
-        
+        - name: source
+          workspace: share-code
+        - name: dockerconfig
+          workspace: docker-credentials

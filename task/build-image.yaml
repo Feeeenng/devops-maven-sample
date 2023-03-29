@@ -1,1 +1,2 @@
-## this plugin from 
+## this plugin from `https://hub.tekton.dev/tekton/task/buildah`
+## install task  `kubectl apply -f https://api.hub.tekton.dev/v1/resource/tekton/task/buildah/0.5/raw`
