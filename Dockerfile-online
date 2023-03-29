@@ -1,4 +1,4 @@
-FROM registry.cn-shenzhen.aliyuncs.com/os_mirror/java:8u92-jre-alpine/java:8u92-jre-alpine
+FROM registry.cn-shenzhen.aliyuncs.com/os_mirror/java:8u92-jre-alpine
 
 WORKDIR /home
 
