@@ -29,8 +29,6 @@ spec:
     #   type: string
     #   description: main sources file
     #   default: '.'
-
-
   workspaces:
     - name: share-code
     - name: kubeconfig-dir
@@ -40,7 +38,6 @@ spec:
       # - name: random-tag
         # type: string
   tasks:
-    ## step checkout
     - name: checkout-code
       taskRef:
         name: git-clone
@@ -55,22 +52,18 @@ spec:
           value: "$(params.commit-id)"
         - name: gitInitImage
           value: togettoyou/gcr.io.tekton-releases.github.com.tektoncd.pipeline.cmd.git-init:v0.40.2
-        # - name: userHome
-          # value: "$(params.user-home)"  
-    ## step unit-test
     # - name: unit-test
     #   taskRef:
     #     name: maven
     #   runAfter:
     #     - "checkout-code"
     #   params:
-    #     # - name: MAVEN_IMAGE
-    #       # value: registry.cn-shenzhen.aliyuncs.com/os_mirror/feeeng.builder-maven:v3.3.0
+    #     - name: MAVEN_IMAGE
+    #       value: registry.cn-shenzhen.aliyuncs.com/os_mirror/gcr.io.cloud-builders.mvn:3.5.0-jdk-8
     #     - name: GOALS
     #       value: 
     #         - clean 
     #         - -gs 
-    #         - $(workspaces.share-code.path)/configuration/settings.xml
     #         - test
     #   workspaces:
     #     - name: source
@@ -94,7 +87,6 @@ spec:
     #     - name: SONAR_SCANNER_IMAGE
     #       value: feeeng/builder-base:v3.3.0
     
-    ## step build java code
     - name: build-code
       taskRef:
         name: maven
@@ -114,7 +106,6 @@ spec:
            workspace: share-code
          - name: maven-settings
 
-    # step use buildah build && push images
     - name: build-image
       taskRef:
         name: buildah
@@ -124,7 +115,7 @@ spec:
         - name: BUILDER_IMAGE
           value: registry.cn-shenzhen.aliyuncs.com/os_mirror/quay.io.buildah.stable:v1.23.3
         - name: IMAGE
-          value:  registry.cn-shenzhen.aliyuncs.com/os_mirror/tekton-shipwright-cicd:$(params.app-name)-v$(task.checkout-code.results.committer-date)
+          value:  "registry.cn-shenzhen.aliyuncs.com/os_mirror/tekton-shipwright-cicd:$(params.app-name)-v$(tasks.checkout-code.results.committer-date)"
         - name: DOCKERFILE
           value: $(workspaces.source.path)/Dockerfile-online
       workspaces:
@@ -132,3 +123,20 @@ spec:
           workspace: share-code
         - name: dockerconfig
           workspace: docker-credentials
+      
+    - name: deploy-app
+      taskRef:
+        name: deploy-app
+      runAfter:
+        - "build-image"
+      params:
+        - name: IMAGE_TAG
+          value: $(tasks.build-image.results.IMAGE_URL)
+        - name: MAINFEST_PATH
+          value: deploy
+        - name: DEPLOY_ENV
+          value: dev
+      workspaces:
+        - name: source
+          workspace: share-code
+        - name: kubeconfig-dir

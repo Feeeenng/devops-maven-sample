@@ -8,7 +8,7 @@ spec:
   description: >-
     This task is from feeeng/builder-base  https://github.com/Feeeenng/builder-base
   workspaces:
-    - name: mainfest-dir
+    - name: source
       optional: true
     - name: kubeconfig-dir
       optional: true
@@ -16,12 +16,18 @@ spec:
     - name: deploy-result
       description: deploy result
   params:
-    - name: script
+    - name: IMAGE_TAG
       description: The Liunx script to run
       type: string
       default: "uname -a"
     - name: image
-      default: feeeng/builder-base
+      default: feeeng/builder-base:v3.3.0
+    - name: MAINFEST_PATH
+      type: string
+      description: 'the kustomize file path'
+    - name: DEPLOY_ENV
+      type: string
+      description: 'mainfest file env'
   steps:
     - name: cli
       image: $(params.image)
@@ -32,4 +38,7 @@ spec:
         [[ -f $(workspaces.kubeconfig-dir.path)/kubeconfig ]] && \
         export KUBECONFIG=$(workspaces.kubeconfig-dir.path)/kubeconfig
 
-        $(params.script)
+        cd $(workspaces.source.path)/$(params.MAINFEST_PATH)/$(params.DEPLOY_ENV)
+        kustomize edit set image docker.io/feeeng/devops-java-sample:latest=$(params.IMAGE_TAG)
+        kubectl kustomize  . | envsubst| kubectl apply -f -
+
