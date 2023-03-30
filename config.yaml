@@ -1,0 +1,41 @@
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: harbor-token
+  namespace: default
+data:
+  config.json: >-
+     docker registry auth config
+type: Opaque
+---
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: kubeconfig
+  namespace: default
+data:
+  kubeconfig: |
+    kubeconfig context
+---
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: maven-settings
+  namespace: default
+data:
+  settings.xml: |-
+    <?xml version="1.0" encoding="UTF-8"?>
+        <settings>
+          <mirrors>
+            <mirror>
+              <id>maven.org</id>
+              <name>Default mirror</name>
+              <url>https://maven.aliyun.com/repository/public/</url>
+              <mirrorOf>*</mirrorOf>
+            </mirror>
+          </mirrors>
+        </settings>
+---
