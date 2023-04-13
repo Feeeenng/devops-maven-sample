@@ -8,11 +8,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kubesphere
+      app: ks-sample
   template:
     metadata:
       labels:
-        app: kubesphere
+        app: ks-sample
     spec:
       containers:
         - env:
