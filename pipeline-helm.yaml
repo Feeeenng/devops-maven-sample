@@ -1,0 +1,89 @@
+apiVersion: devops.kubesphere.io/v1alpha3
+kind: ClusterTemplate
+metadata:
+  name: helm
+  annotations:
+    devops.kubesphere.io/displayNameEN: "helm"
+    devops.kubesphere.io/displayNameZH: "helm"
+    devops.kubesphere.io/descriptionEN: "Implement CI/CD pipeline through Helm deployment"
+    devops.kubesphere.io/descriptionZH: "通过 Helm 部署方式 实现CI/CD流水线"
+    devops.kubesphere.io/icon: "helm.svg"
+spec:
+  parameters:
+    - name: GitRepository
+      description: The URL you want to clone.
+      required: true
+      default: https://github.com/Feeeenng/devops-maven-sample.git
+    - name: GitRevision
+      description: Which revision you want to checkout from.
+      required: true
+      default: helm
+    - name: CHART_VERSION
+      description: helm chart version
+      required: true
+      default: "0.0.1"
+    - name: APP_VERSION
+      description: helm chart app version
+      required: true
+      default: "SNAPSHOT-helm-1"
+    - name: KUBECONFIG_CREDENTIAL_ID
+      description: devops create kubeconfig file
+      required: true
+      default: "demo-kubeconfig"
+    - name: NAMESPACE
+      description: kubernetes namespace for helm chart deploy
+      required: true
+      default: "demo"
+    
+
+  template: |
+    pipeline {
+      agent {
+        kubernetes {
+          inheritFrom 'maven'
+          containerTemplate {
+            name 'maven'
+            image 'feeeng/builder-maven:v3.3.0'
+          }
+        }
+      }
+
+
+
+      stages {
+          stage('Clone repository') {
+            steps {
+              checkout([$class: 'GitSCM', branches: [[name: '$(.params.GitRevision)']], 
+                  extensions: [[$class: 'CloneOption', depth: 1, shallow: true]], userRemoteConfigs: [[url: '$(.params.GitRepository)']]
+              ])
+          }
+      }
+
+      stage('app package') {
+          steps {
+            container ('maven') {
+                sh  "helm3 package deploy/devops-maven-sample --version=$(.params.CHART_VERSION) --app-version=$(.params.APP_VERSION)"
+
+            }
+          }
+      }
+
+       stage('deploy to dev') {
+          steps {
+           input(id: 'deploy-to-dev', message: 'deploy to dev?')
+            container ('maven') {
+                 withCredentials([kubeconfigFile(credentialsId: "$(.params.KUBECONFIG_CREDENTIAL_ID)", variable: 'KUBECONFIG')]) {
+                    sh """
+                    helm3 upgrade --install  devops-maven-sample  deploy/devops-maven-sample --namespace $(.params.NAMESPACE)\
+                          --set image.repository=docker.io/feeeng/devops-maven-sample \
+                          --set  image.tag=$(.params.APP_VERSION)
+                        """
+
+                    }
+                    
+                }
+              }
+            }
+            
+        }
+    }
