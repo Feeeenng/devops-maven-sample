@@ -62,7 +62,7 @@ pipeline {
           steps {
             container ('maven') {
                 sh  "helm3 package deploy/devops-maven-sample --version=$CHART_VERSION --app-version=$BRANCH_NAME-$BUILD_NUMBER"
-                archiveArtifacts artifacts: 'devops-maven-sample-$CHART_VERSION.tgz'
+                archiveArtifacts artifacts: '*.tgz'
 
             }
           }
