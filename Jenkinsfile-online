@@ -64,7 +64,7 @@ pipeline {
             branch 'master'
           }
           steps {
-            input(id: 'deploy-to-dev', message: 'deploy to dev?')
+          //  input(id: 'deploy-to-dev', message: 'deploy to dev?')
             container ('maven') {
                 withCredentials([
                     kubeconfigFile(
