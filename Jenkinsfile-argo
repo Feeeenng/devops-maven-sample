@@ -86,8 +86,11 @@ pipeline {
             script {
               container ('maven') {
                   withCredentials([usernamePassword(credentialsId: "$GITHUB_CREDENTIAL_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+
+                      
                       def encodedPassword = URLEncoder.encode("$GIT_PASSWORD",'UTF-8')
                       def encodedUsername = URLEncoder.encode("$GIT_USERNAME",'UTF-8')
+                      sh "git clone --branch $BRANCH_NAME https://github.com/Feeeenng/devops-maven-sample.git"
                       sh """
                         git config --global user.email "kubesphere-cd@yunify.com"
                         git config --global user.name "kubesphere-cd"
