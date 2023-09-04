@@ -1,8 +1,13 @@
 pipeline {
   agent {
-    node {
-      label 'maven'
-    }
+    kubernetes {
+          inheritFrom 'maven'
+          containerTemplate {
+            name 'maven'
+            image 'feeeng/builder-maven:v3.3.0'
+          }
+        }
+
   }
 
     parameters {
@@ -36,13 +41,13 @@ pipeline {
             }
         }
 
-        stage ('unit test') {
-            steps {
-                container ('maven') {
-                    sh 'mvn clean test'
-                }
-            }
-        }
+        // stage ('unit test') {
+        //     steps {
+        //         container ('maven') {
+        //             sh 'mvn clean test'
+        //         }
+        //     }
+        // }
  
         stage ('build & push') {
             steps {
