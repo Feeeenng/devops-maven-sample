@@ -98,7 +98,7 @@ pipeline {
                         
                         git add .  && git commit -m "jenkins CI update for dev $BUILD_NUMBER"
                         
-                        git push  https://github.com/Feeeenng/devops-maven-sample.git HEAD:$BRANCH_NAME
+                        git push  origin $BRANCH_NAME
 
                         """
                     }
