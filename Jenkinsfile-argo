@@ -99,7 +99,7 @@ pipeline {
                         git add . 
                         git commit -m "images update for dev $BUILD_NUMBER"
                         
-                        git push origin HEAD:multi-cluster
+                        git push --set-upstream origin ${BRANCH_NAME}
 
                         """
                     }
