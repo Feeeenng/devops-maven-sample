@@ -97,7 +97,7 @@ pipeline {
               
                         git add . 
                         git commit -m "images update for dev $BUILD_NUMBER"
-                        git push  origin HEAD:$BRANCH_NAME
+                        git push  origin HEAD
 
                         """
                     }
