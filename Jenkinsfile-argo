@@ -90,8 +90,11 @@ pipeline {
                       
                       def encodedPassword = URLEncoder.encode("$GIT_PASSWORD",'UTF-8')
                       def encodedUsername = URLEncoder.encode("$GIT_USERNAME",'UTF-8')
-                      sh "git clone --branch $BRANCH_NAME https://github.com/Feeeenng/devops-maven-sample.git"
+                      sh "git clone --branch $BRANCH_NAME https://github.com/Feeeenng/devops-maven-sample.git ../code"
+
+                      dir("../code"){
                       sh """
+                        
                         git config --global user.email "kubesphere-cd@yunify.com"
                         git config --global user.name "kubesphere-cd"
                         git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
@@ -104,6 +107,7 @@ pipeline {
                         git push  origin $BRANCH_NAME
 
                         """
+}
                     }
                     
               }
