@@ -95,9 +95,10 @@ pipeline {
   
                         cd deploy/dev/ 
                         kustomize edit set image $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:latest=$REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER
+                        git pull origin $BRANCH_NAME:$BRANCH_NAME
                         git add . 
                         git commit -m "images update for dev $BUILD_NUMBER"
-                        git pull origin $BRANCH_NAME:$BRANCH_NAME
+                        
                         git push origin HEAD:multi-cluster
 
                         """
