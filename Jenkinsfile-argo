@@ -12,7 +12,7 @@ pipeline {
 
     parameters {
         string(name:'TAG_NAME',defaultValue: '',description:'tag name ')
-        choise(name: 'ENVIRONMENT', choices: ['DEV', 'QA', 'PROD'], description: 'Environment to deploy')
+        choice(name: 'ENVIRONMENT', choices: ['DEV', 'QA', 'PROD'], description: 'Environment to deploy')
     }
 
     environment {
