@@ -7,3 +7,6 @@ images:
 - name: docker.io/feeeng/devops-java-sample:latest
   newName: docker.io/feeeng/devops-java-sample
   newTag: SNAPSHOT-multi-cluster-27
+- name: docker.io/feeeng/devops-maven-sample:latest
+  newName: docker.io/feeeng/devops-maven-sample
+  newTag: SNAPSHOT-multi-cluster-29
