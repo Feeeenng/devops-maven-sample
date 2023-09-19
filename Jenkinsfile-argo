@@ -99,6 +99,7 @@ pipeline {
                 container("maven"){
                     withCredentials([kubeconfigFile(credentialsId: env.KUBECONFIG_CREDENTIAL_ID,variable: 'KUBECONFIG')]) 
                     {
+                      sh "ls -l  && pwd"
                       sh "kubectl apply -f deploy/applicationset.yaml"
                       sh "echo y | argocd login devops-argocd-server.argocd.svc --password 'oif5By2VljZi61uH' --username admin"
                       sh "argocd app sync $APP_NAME"
