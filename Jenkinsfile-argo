@@ -4,7 +4,7 @@ pipeline {
           inheritFrom 'maven'
           containerTemplate {
             name 'maven'
-            image 'feeeng/builder-maven:v3.3.0'
+            image 'feeeng/builder-maven:v3.4.0'
           }
         }
 
@@ -107,7 +107,7 @@ pipeline {
                         git push  origin $BRANCH_NAME
 
                         """
-}
+                          }
                     }
                     
               }
@@ -115,5 +115,13 @@ pipeline {
           }
         }        
 
+        stage("gitops deploy"){
+            steps{
+                container("maven"){
+                  sh "echo y | argocd login argocd-server.argocd.svc.cluster.local --password 'oif5By2VljZi61uH' --username admin"
+                  sh "argocd app sync $APP_NAME"
+                }
+            }
+        }
     }
 }

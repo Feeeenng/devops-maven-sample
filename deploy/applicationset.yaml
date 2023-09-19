@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: devops-maven-sample
+spec:
+  generators:
+  - list:
+      elements:
+      - cluster: dev
+        url: https://kubernetes.default.svc
+      - cluster: test
+        url: https://kubernetes.default.svc
+  template:
+    metadata:
+      name: '{{cluster}}-devops-maven-sample'
+    spec:
+      project: devops-maven-sample
+      syncPolicy:
+        automated:
+          prune: true
+      source:
+        repoURL: https://github.com/Feeeenng/devops-maven-sample.git
+        targetRevision: multi-cluster
+        path: deploy/{{cluster}}
+      destination:
+        server: '{{url}}'
+        namespace: default

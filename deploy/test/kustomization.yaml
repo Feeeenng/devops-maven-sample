@@ -3,14 +3,11 @@ kind: Kustomization
 
 resources:
 - ../base
-
-#namespace
-namespace: kubesphere-sample-test
-
 images:
-- name: feeeng/devops-java-sample:latest
-  newName: $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME
-  newTag: SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER
+- name: docker.io/feeeng/devops-java-sample:latest
+  newName: docker.io/feeeng/devops-java-sample
+  newTag: SNAPSHOT-multi-cluster-27
+
 
 
 # # patch
