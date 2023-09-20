@@ -14,7 +14,7 @@ spec:
     metadata:
       name: '{{cluster}}-devops-maven-sample'
     spec:
-      project: devops-maven-sample
+      project: default
       syncPolicy:
         automated:
           prune: true
