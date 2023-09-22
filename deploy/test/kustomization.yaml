@@ -3,18 +3,7 @@ kind: Kustomization
 
 resources:
 - ../base
-# images:
-# - name: docker.io/feeeng/devops-java-sample:latest
-#   newName: docker.io/feeeng/devops-java-sample
-#   newTag: SNAPSHOT-multi-cluster-27
-
-
-
-# # patch
-# patches:
-# - path: update_patch.yaml
-#   target:
-#     group: apps
-#     kind: Deployment
-#     name: ks-sample
-#     version: v1
+images:
+- name: docker.io/feeeng/devops-maven-sample:latest
+  newName: docker.io/feeeng/devops-maven-sample
+  newTag: SNAPSHOT-multi-cluster-67
