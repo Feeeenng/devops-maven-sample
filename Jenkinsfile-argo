@@ -101,7 +101,7 @@ pipeline {
                     withCredentials([kubeconfigFile(credentialsId: env.KUBECONFIG_CREDENTIAL_ID,variable: 'KUBECONFIG')]) 
                     {
                       sh "kubectl apply -n argocd -f deploy/applicationset.yaml"
-                      sh "echo y | argocd login devops-argocd-server.argocd.svc --password 'oif5By2VljZi61uH' --username admin"
+                      // sh "echo y | argocd login devops-argocd-server.argocd.svc --password 'oif5By2VljZi61uH' --username admin"
                     }
                 }
                 }
