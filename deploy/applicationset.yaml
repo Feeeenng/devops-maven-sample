@@ -9,7 +9,7 @@ spec:
       - cluster: dev
         url: https://kubernetes.default.svc
       - cluster: test
-        url: https://kubernetes.default.svc
+        url: https://172.31.73.245:6443
   template:
     metadata:
       name: '{{cluster}}-devops-maven-sample'
