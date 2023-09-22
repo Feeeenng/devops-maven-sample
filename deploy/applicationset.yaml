@@ -3,7 +3,6 @@ kind: ApplicationSet
 metadata:
   name: devops-maven-sample
 spec:
-  cascade: false
   generators:
   - list:
       elements:
