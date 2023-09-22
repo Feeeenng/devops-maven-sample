@@ -3,7 +3,9 @@ kind: Kustomization
 
 resources:
 - ../base
+
 # images:
 # - name: docker.io/feeeng/devops-java-sample:latest
 #   newName: docker.io/feeeng/devops-java-sample
 #   newTag: SNAPSHOT-multi-cluster-27
+
