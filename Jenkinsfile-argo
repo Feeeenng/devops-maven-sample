@@ -81,7 +81,7 @@ pipeline {
   
                         cd deploy/dev/ 
                         kustomize edit set image $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:latest=$REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER
-                        cd ../ && deploy/test/ 
+                        cd deploy/test/ 
                         kustomize edit set image $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:latest=$REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER
                         
                         git add .  && git commit -m "jenkins CI update for dev $BUILD_NUMBER"
