@@ -102,6 +102,8 @@ pipeline {
                     {
                       sh "kubectl apply -n argocd -f deploy/applicationset.yaml"
                       sh "echo y | argocd login devops-argocd-server.argocd.svc --password 'oif5By2VljZi61uH' --username admin"
+                      sh "argocd sycn app dev-devops-maven-sample"
+                      sh "argocd sycn app test-devops-maven-sample"
                     }
                 }
                 }
