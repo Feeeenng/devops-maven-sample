@@ -1,8 +1,13 @@
 pipeline {
   agent {
-    node {
-      label 'maven'
-    }
+    kubernetes {
+          inheritFrom 'maven'
+          containerTemplate {
+            name 'maven'
+            image 'feeeng/builder-maven:v3.4.0'
+          }
+        }
+
   }
 
     parameters {
