@@ -4,4 +4,6 @@ WORKDIR /home
 
 COPY target/*.jar /home
 
-ENTRYPOINT java -jar *.jar
+ENV JAVA_OPTS=""
+
+ENTRYPOINT java ${JAVA_OPTS} -jar *.jar
