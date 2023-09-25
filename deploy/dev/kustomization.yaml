@@ -6,4 +6,4 @@ resources:
 images:
 - name: docker.io/feeeng/devops-maven-sample:latest
   newName: docker.io/feeeng/devops-maven-sample
-  newTag: SNAPSHOT-master-3
+  newTag: SNAPSHOT-master-4
