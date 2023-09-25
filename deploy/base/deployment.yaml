@@ -20,7 +20,7 @@ spec:
               value: js|html
             - name: CACHE_PUBLIC_EXPIRATION
               value: 3d
-          image: docker.io/feeeng/devops-java-sample:latest
+          image: docker.io/feeeng/devops-maven-sample:latest
           readinessProbe:
             httpGet:
               path: /
