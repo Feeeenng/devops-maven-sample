@@ -21,7 +21,8 @@ pipeline {
         REGISTRY = 'docker.io'
         DOCKERHUB_NAMESPACE = 'feeeng'
         GITHUB_ACCOUNT = 'Feeeenng'
-        APP_NAME = 'devops-java-sample'
+        APP_NAME = 'devops-maven-sample'
+        NAMESPACE = 'devspace'
     }
 
     stages {
@@ -45,6 +46,7 @@ pipeline {
         stage ('unit test') {
             steps {
                 container ('maven') {
+                    sh "devspace use namespace ${NAMESPACE}"
                     sh "devspace deploy dev"
                     // sh 'mvn clean test'
                 }
