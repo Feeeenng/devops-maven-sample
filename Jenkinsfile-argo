@@ -49,7 +49,7 @@ pipeline {
                     withCredentials([kubeconfigFile(credentialsId: env.KUBECONFIG_CREDENTIAL_ID,variable: 'KUBECONFIG')])
                         {
                             sh "devspace use namespace ${NAMESPACE}"
-                            sh "devspace deploy dev"
+                            sh "devspace dev app"
                         }
                     // sh 'mvn clean test'
                 }
