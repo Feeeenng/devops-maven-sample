@@ -1,8 +1,13 @@
 pipeline {
-  agent {
-    node {
-      label 'maven'
-    }
+   agent {
+    kubernetes {
+          inheritFrom 'maven'
+          containerTemplate {
+            name 'maven'
+            image 'feeeng/builder-base:v3.4.0-devspace'
+          }
+        }
+
   }
 
     parameters {
@@ -40,7 +45,7 @@ pipeline {
         stage ('unit test') {
             steps {
                 container ('maven') {
-                    sh "devspace"
+                    sh "devspace deploy dev"
                     // sh 'mvn clean test'
                 }
             }
