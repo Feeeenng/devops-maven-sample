@@ -46,8 +46,11 @@ pipeline {
         stage ('unit test') {
             steps {
                 container ('maven') {
-                    sh "devspace use namespace ${NAMESPACE}"
-                    sh "devspace deploy dev"
+                    withCredentials([kubeconfigFile(credentialsId: env.KUBECONFIG_CREDENTIAL_ID,variable: 'KUBECONFIG')])
+                        {
+                            sh "devspace use namespace ${NAMESPACE}"
+                            sh "devspace deploy dev"
+                        }
                     // sh 'mvn clean test'
                 }
             }
