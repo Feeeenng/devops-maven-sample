@@ -35,10 +35,10 @@ spec:
               protocol: TCP
           resources:
             limits:
-              cpu: 300m
-              memory: 600Mi
+              cpu: 500m
+              memory: 1024Mi
             requests:
-              cpu: 100m
-              memory: 100Mi
+              cpu: 500m
+              memory: 1024Mi
       dnsPolicy: ClusterFirst
       restartPolicy: Always

@@ -12,6 +12,6 @@ FROM java:8u92-jre-alpine
 WORKDIR /home
 
 
-COPY --from=builder /builder /home
+COPY --from=builder /builder/target/*.jar /home
 
 ENTRYPOINT java -jar *.jar
