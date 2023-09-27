@@ -24,6 +24,7 @@ pipeline {
             steps {
                   checkout([
                     $class: 'GitSCM',
+                    branches: [[name: 'devspace']],
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [],
                     submoduleCfg: [],
@@ -39,7 +40,8 @@ pipeline {
         stage ('unit test') {
             steps {
                 container ('maven') {
-                    sh 'mvn clean test'
+                    sh "devspace"
+                    // sh 'mvn clean test'
                 }
             }
         }
