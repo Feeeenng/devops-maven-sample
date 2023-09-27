@@ -41,7 +41,7 @@ deployments:
 dev:
   app:
     # Search for the container that runs this image
-    imageSelector: docker.io/feeeng/devops-java-sample:SNAPSHOT-master-63
+    imageSelector: docker.io/feeeng/devops-maven-sample:SNAPSHOT-master-74
     # Replace the container image with this dev-optimized image (allows to skip image building during development)
     devImage: ghcr.io/loft-sh/devspace-containers/java-maven:3-openjdk-8-slim
     # Sync files between the local filesystem and the development container

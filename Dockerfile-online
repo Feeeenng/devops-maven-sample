@@ -7,7 +7,7 @@ COPY . /builder/
 RUN mvn -Dmaven.test.skip=true clean package
 
 
-FROM java:openjdk-8-jre-alpine
+FROM java:8u92-jre-alpine
 
 WORKDIR /home
 
