@@ -22,7 +22,7 @@ pipelines:
 # We recommend to skip image building during development (devspace dev) as much as possible
 images:
   app:
-    image: docker.io/feeeng/devops-java-sample
+    image: docker.io/feeeng/devops-maven-sample
     dockerfile: Dockerfile-online
     context: .
     tags:
