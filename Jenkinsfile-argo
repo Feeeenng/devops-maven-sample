@@ -42,65 +42,30 @@ pipeline {
              
             }
         }
+        
+        stage ('build & push') {
+            steps {
+                container ('maven') {
+                    withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
+                        sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+                    }
+                }
+            }
+        }
 
-        stage ('unit test') {
+
+        stage ('deploy') {
             steps {
                 container ('maven') {
                     withCredentials([kubeconfigFile(credentialsId: env.KUBECONFIG_CREDENTIAL_ID,variable: 'KUBECONFIG')])
                         {
                             sh "devspace use namespace ${NAMESPACE}"
-                            sh "devspace dev app"
+                            sh "devspace deploy"
                         }
-                    // sh 'mvn clean test'
                 }
             }
         }
- 
-        // stage ('build & push') {
-        //     steps {
-        //         container ('maven') {
-        //             sh 'mvn clean package -DskipTests'
-        //             sh 'docker build -f Dockerfile-online -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
-        //             withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
-        //                 sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
-        //                 sh 'docker push  $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
-        //             }
-        //         }
-        //     }
-        // }
-
-
-
-        // stage('update mainfast') {
-        //   when{
-        //     branch 'master'
-        //   }
-        //   steps {
-        //     // input(id: 'deploy-to-dev', message: 'deploy to dev?')
-        //     script {
-        //       container ('maven') {
-        //           withCredentials([usernamePassword(credentialsId: "$GITHUB_CREDENTIAL_ID", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-        //               def encodedPassword = URLEncoder.encode("$GIT_PASSWORD",'UTF-8')
-        //               def encodedUsername = URLEncoder.encode("$GIT_USERNAME",'UTF-8')
-        //               sh """
-        //                 git config --global user.email "kubesphere-cd@yunify.com"
-        //                 git config --global user.name "kubesphere-cd"
-        //                 git config --local credential.helper "!f() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; f"
-  
-        //                 cd deploy/dev/ 
-        //                 kustomize edit set image $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:latest=$REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER
-              
-        //                 git add . 
-        //                 git commit -m "images update for dev $BUILD_NUMBER"
-        //                 git push  origin HEAD:master
-
-        //                 """
-        //             }
-                    
-        //       }
-        //     }
-        //   }
-        // }        
+     
 
     }
 }

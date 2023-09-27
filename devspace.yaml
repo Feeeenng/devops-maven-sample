@@ -1,5 +1,10 @@
 version: v2beta1
-name: devops-maven-samplegit
+name: devops-maven-sample
+
+
+localRegistry:
+  enabled: false
+
 
 # This is a list of `pipelines` that DevSpace can execute (you can define your own)
 pipelines:
@@ -26,7 +31,7 @@ images:
     dockerfile: Dockerfile-online
     context: .
     tags:
-      - "devspace-v01"
+    - $(git describe --always)
 
 # This is a list of `deployments` that DevSpace can create for this project
 deployments:
