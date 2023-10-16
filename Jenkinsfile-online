@@ -41,7 +41,7 @@ pipeline {
         stage ('build & push') {
             steps {
                 container ('maven') {
-                      archiveArtifacts artifacts: 'target/*.jar'
+                   //   archiveArtifacts artifacts: 'target/*.jar'
                     sh 'docker build -f Dockerfile-online -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:$BRANCH_NAME-${GIT_COMMIT:0:7} .'
                     withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
                         sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
