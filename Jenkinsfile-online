@@ -1,8 +1,12 @@
 pipeline {
   agent {
-    node {
-      label 'maven'
-    }
+    kubernetes {
+          inheritFrom 'maven'
+          containerTemplate {
+            name 'maven'
+            image 'feeeng/builder-maven:v3.4.0'
+          }
+        }
   }
 
     parameters {
@@ -74,6 +78,7 @@ pipeline {
                     ]) {
                         // patch service
                     // sh 'envsubst < deploy/dev/patch-svc.yaml.tmp > deploy/dev/patch.svc.yaml'
+                    sh 'kustomize edit set image $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:latest=$REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER'
                     sh 'kubectl kustomize  deploy/dev | envsubst| kubectl apply -f -'
                 }
             }
