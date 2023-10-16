@@ -41,7 +41,6 @@ pipeline {
         stage ('build & push') {
             steps {
                 container ('maven') {
-                    sh 'mvn -Dmaven.test.skip=true -gs `pwd`/configuration/settings.xml clean package'
                       archiveArtifacts artifacts: 'target/*.jar'
                     sh 'docker build -f Dockerfile-online -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:$BRANCH_NAME-${GIT_COMMIT:0:7} .'
                     withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
