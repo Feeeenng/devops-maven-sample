@@ -2,6 +2,10 @@ FROM java:8u92-jre-alpine
 
 WORKDIR /home
 
-COPY target/*.jar /home
+COPY . /home
 
-ENTRYPOINT java -jar *.jar
+ENV JAVA_OPTS ""
+RUN mvn -Dmaven.test.skip=true -gs configuration/settings.xml clean package
+
+
+ENTRYPOINT java -jar target/*.jar $JAVA_OPTS
