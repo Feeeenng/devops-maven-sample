@@ -1,11 +1,18 @@
+FROM maven:3.5 AS builder
+
+WORKDIR /builder
+
+COPY . /builder/
+
+RUN mvn -Dmaven.test.skip=true clean package
+
+
 FROM java:8u92-jre-alpine
 
 WORKDIR /home
 
-COPY . /home
-
 ENV JAVA_OPTS ""
-RUN mvn -Dmaven.test.skip=true -gs configuration/settings.xml clean package
 
-
-ENTRYPOINT java -jar target/*.jar $JAVA_OPTS
+COPY --from=builder /builder/target/*.jar /home
+ 
+ENTRYPOINT java -jar *.jar $JAVA_OPTS
