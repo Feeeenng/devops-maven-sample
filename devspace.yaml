@@ -78,7 +78,7 @@ commands:
   mvn: 
     command: |
       devspace enter -- bash -c '
-        mvn spring-boot:run  -Dmaven.test.skip=true'
+        mvn spring-boot:run  -f pom.xml -Dmaven.test.skip=true'
   start:
     command: |
       devspace enter -- bash -c '
