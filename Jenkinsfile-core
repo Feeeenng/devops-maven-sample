@@ -1,0 +1,52 @@
+pipeline {
+  agent {
+       kubernetes {
+         // 由于 kubesphere 没有基础 .net 模板, 因此继承 maven 模板
+          inheritFrom 'maven'
+          containerTemplate {
+            name 'maven'
+            image 'mcr.microsoft.com/dotnet/sdk:5.0'
+          }
+        }
+
+  }
+  environment  {
+    DOCKER_CREDENTIAL_ID = 'harbor'
+    REGISTRY = 'dockerhub.kubekey.local'
+    DOCKERHUB_NAMESPACE = 'library'
+    APP_NAME = 'basicmodelapi'
+    
+  }
+  stages {
+    stage('Checkout SCM') {
+      steps {
+        container('maven'){
+        checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: "main"]],
+                    doGenerateSubmoduleConfigurations: false,
+                  //  extensions: [
+                  //      [$class: 'SparseCheckoutPaths',  sparseCheckoutPaths:[[$class:'SparseCheckoutPath', path:'$PATH_DIR']]]   
+                  //  ],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [[credentialsId: 'gitlab',
+                    url: 'git-url']]
+                ])
+        }
+      }
+    }
+    stage('build && push') {
+      steps {
+        container('maven'){
+          sh ' ls -l && pwd '
+          sh "dotnet build BasicModelAPIServiceLib"
+          sh "dotnet publish  -c Release BasicModelAPIServiceLib"
+          script {
+            def gitCommit = sh(script: 'git rev-parse --short=7 HEAD', returnStdout: true).trim()
+              sh "cd BasicModelAPIServiceLib && docker build -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:$BRANCH_NAME-${gitCommit} ."    
+              withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
+              sh 'echo "$DOCKER_PASSWORD" | docker login $REGISTRY -u "$DOCKER_USERNAME" --password-stdin'
+              sh "docker push $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:$BRANCH_NAME-${gitCommit}  "
+            }
+           }
+ 
