@@ -5,7 +5,7 @@ Windows 框架分为 `.net core ` 跟 `.net Framework`, core 可以运行在 Liu
 
 # .net Core容器化
 
-core 容器化主要需要使用2个镜像
+core 容器化是可以通过 Liunx 环境进行构建并且运行在 Liunx 环境上的应用
 
 ## 构建环境镜像
 
