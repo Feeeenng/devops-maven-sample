@@ -30,3 +30,6 @@ Windows 框架分为 `.net core ` 跟 `.net Framework`, core 可以运行在 Liu
 
 .net Framework
 
+- mcr.microsoft.com/windows/servercore:ltsc2022
+- mcr.microsoft.com/windows/servercore:ltsc2019
+官方地址：https://mcr.microsoft.com/en-us/product/windows/servercore/about
