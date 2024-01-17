@@ -1,0 +1,5 @@
+FROM mcr.microsoft.com/dotnet/aspnet:5.0" AS runtime
+WORKDIR "BasicModel.WebAPI"
+EXPOSE  "8002"
+COPY BasicModel.WebAPI/bin/Release/net5.0/publish .
+ENTRYPOINT ["dotnet", "BasicModel.WebAPI.dll"]
