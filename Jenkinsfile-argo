@@ -12,7 +12,6 @@ pipeline {
 
     parameters {
         string(name:'TAG_NAME',defaultValue: '',description:'tag name ')
-        choice(name: 'ENVIRONMENT', choices: ['DEV', 'QA', 'PROD'], description: 'Environment to deploy')
     }
 
     environment {
