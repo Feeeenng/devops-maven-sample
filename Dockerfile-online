@@ -1,3 +1,4 @@
+# from images
 FROM java:8u92-jre-alpine
 
 WORKDIR /home
