@@ -17,6 +17,8 @@ spec:
       project: default
       syncPolicy:
         preserveResourcesOnDeletion: true
+        syncOptions:
+        - CreateNamespace=true
         automated:
           prune: true
       source:
