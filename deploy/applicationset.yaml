@@ -16,6 +16,7 @@ spec:
     spec:
       project: default
       syncPolicy:
+        preserveResourcesOnDeletion: true
         automated:
           prune: true
       source:
