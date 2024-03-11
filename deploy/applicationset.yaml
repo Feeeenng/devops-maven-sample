@@ -29,4 +29,4 @@ spec:
         path: deploy/{{cluster}}
       destination:
         server: '{{url}}'
-        namespace: default
+        namespace: multi-demo
