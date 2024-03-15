@@ -1,7 +1,7 @@
 pipeline {
     agent {
         node {
-            label 'mavenjdk11'
+            label 'maven'
         }
     }
 
@@ -23,7 +23,7 @@ pipeline {
     stages {
         stage('unit test') {
             steps {
-                container('maven') {
+                container('mavenjdk11') {
                     sh 'mvn clean test'
                 }
             }
