@@ -1,12 +1,8 @@
 pipeline {
    agent {
-    kubernetes {
-          inheritFrom 'maven'
-          containerTemplate {
-            name 'maven'
-            image 'harbor.dywzhny.com.cn/arm/builder-maven:v3.2.1-jdk11'
-          }
-        }
+    node {
+      label "jdk11 && maven && java"
+   }
   }
 
     parameters {
@@ -40,7 +36,7 @@ pipeline {
                         withSonarQubeEnv('sonar') {
                            // sh 'mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN'
                                 sh """ mvn clean verify sonar:sonar \
-                                      -Dsonar.projectKey=java-sample \
+                                      -Dsonar.projectKey=$APP_NAME \
                                       -Dsonar.login=$SONAR_TOKEN
                                    """ 
                         }
