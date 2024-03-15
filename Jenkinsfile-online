@@ -1,7 +1,7 @@
 pipeline {
     agent {
         node {
-            label 'maven'
+            label 'jdk11 maven java'
         }
     }
 
@@ -23,7 +23,7 @@ pipeline {
     stages {
         stage('unit test') {
             steps {
-                container('mavenjdk11') {
+                container('maven') {
                     sh 'mvn clean test'
                 }
             }
@@ -31,7 +31,7 @@ pipeline {
 
         stage('sonarqube analysis') {
             steps {
-                container('mavenjdk11') {
+                container('maven') {
                     withCredentials([string(credentialsId: "$SONAR_CREDENTIAL_ID", variable: 'SONAR_TOKEN')]) {
                         withSonarQubeEnv('sonar') {
                            // sh 'mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN'
@@ -50,7 +50,7 @@ pipeline {
 
         stage('build & push') {
             steps {
-                container('mavenjdk11') {
+                container('maven') {
                     sh 'mvn clean package -DskipTests'
                     sh 'docker build -f Dockerfile-online -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
                     withCredentials([usernamePassword(passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME', credentialsId: "$DOCKER_CREDENTIAL_ID",)]) {
