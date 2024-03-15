@@ -1,9 +1,13 @@
 pipeline {
-    agent {
-        node {
-            label 'jdk11 maven java'
+   agent {
+    kubernetes {
+          inheritFrom 'maven'
+          containerTemplate {
+            name 'maven'
+            image 'harbor.dywzhny.com.cn/arm/builder-maven:v3.2.1-jdk11'
+          }
         }
-    }
+  }
 
     parameters {
         string(name: 'TAG_NAME', defaultValue: '', description: '')
