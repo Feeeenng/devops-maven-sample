@@ -1,4 +1,7 @@
-FROM java:8u92-jre-alpine
+#ARM  openjdk 8
+FROM clover/java:openjdk-8-jre
+#FROM java:8u92-jre-alpine
+
 
 WORKDIR /home
 
