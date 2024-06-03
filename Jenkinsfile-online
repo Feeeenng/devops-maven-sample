@@ -16,7 +16,7 @@ pipeline {
         REGISTRY = 'docker.io'
         DOCKERHUB_NAMESPACE = 'feeeng' // change me
         GITHUB_ACCOUNT = 'kubesphere' // change me
-        APP_NAME = 'devops-java-sample'
+        APP_NAME = 'devops-maven-sample'
         SONAR_CREDENTIAL_ID = 'sonar-token'
     }
 
